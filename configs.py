@@ -21,13 +21,13 @@ class Db:
     def query(self, sql, *args):
         try:
             with self.db.cursor() as cursor:
-                cursor.execute(sql, *args)
+                cursor.execute(sql, args)
                 return cursor.fetchall()
         except Exception as e:
             print(str(e))
             return str(e)
 
-    def into(self, sql, *args):
+    def exec(self, sql, *args):
         try:
             with self.db.cursor() as cursor:
                 cursor.execute(sql, args)
