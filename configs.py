@@ -5,9 +5,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 DB_HOST = os.getenv('DB_HOST', 'localhost')
-DB_USER = os.getenv('DB_HOST', 'localhost')
-DB_PASSWORD = os.getenv('DB_HOST', 'localhost')
-DB_STORE = os.getenv('DB_HOST', 'localhost')
+DB_USER = os.getenv('DB_USER', '')
+DB_PASSWORD = os.getenv('DB_PASSWORD', '')
+DB_STORE = os.getenv('DB_STORE', '')
 
 
 class Db:
@@ -19,6 +19,19 @@ class Db:
         self.db.close()
 
     def query(self, sql, *args):
-        with self.db.cursor() as cursor:
-            cursor.execute(sql, *args)
-            return cursor.fetchall()
+        try:
+            with self.db.cursor() as cursor:
+                cursor.execute(sql, *args)
+                return cursor.fetchall()
+        except Exception as e:
+            print(str(e))
+            return str(e)
+
+    def into(self, sql, *args):
+        try:
+            with self.db.cursor() as cursor:
+                cursor.execute(sql, args)
+            self.db.commit()
+        except Exception as e:
+            print(str(e))
+            return str(e)
